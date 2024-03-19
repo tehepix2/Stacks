@@ -17,23 +17,80 @@ public class Main {
         for (char i : str.toCharArray()) {
             characters.add(i);
         }
-        
+        lib.clearConsole();
+        boolean valid = true;
+
         for (char i : closedBrace) {
             if (characters.get(0) == i) {
-                System.out.println("Invalid");
-            }
-            else {
-                for (int k = 0; k < stack.size(); k++) {
-                    for (char j : openBrace) {
-                        if (characters.get(k).compareTo(j) == 0) {
-                            System.out.println("Gets");
+                valid = false; 
+            }  
+            
+        }
+        for (char i : openBrace) {
+            if (characters.get(characters.size() - 1) == i) {
+                valid = false;
+            } 
+        }
+    
+        if (valid == true) {
+            for (int i = 0; i < characters.size() - 1; i++) {
+                for (char l : openBrace) {
+                    if (characters.get(i) == l) {
+                        char set = ')';
+                        switch (characters.get(i)) {
+                            case '(':
+                                set = ')';
+                                break;
+                            case '[':
+                                set = ']';
+                                break;
+                            case '{':
+                                set = '}';
+                                break;
+                            case '<':
+                                set = '>';
+                                break;
                         }
+
+                        stack.add(0, new Brace('o', l, i, set));
                     }
                 }
             }
         }
+        int count = 1;
+        for (Brace i : stack) {
+            count = 1;
+            while (i.getState() == 'o') {
+                for (char k : closedBrace) {
+                    
+                    if (characters.get(i.getIndex() + count) == i.getClose()) {
+                        i.changeState();
+                        break;
+                        
+                    }
+                    else if (characters.get(i.getIndex() + 1) == k) {
+                        break;
+                    }
+                    count++;
+                }
+            }
+        }
+        for (Brace i : stack) {
+            if (i.getState() == 'c') {
+                stack.remove(i);
+            }
+            
+        }
+        if (stack.size() > 0) {
+            valid = false;
+        }
 
-        System.out.println(stack);
+        if (valid == true) {
+            System.out.println("Valid.");
+        }
+        else if (valid == false) {
+            System.out.println("Invalid.");
+        }
        
     }    
         
