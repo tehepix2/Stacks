@@ -58,38 +58,40 @@ public class Main {
             }
         }
         int count = 1;
+
         for (Brace i : stack) {
             count = 1;
-            while (i.getState() == 'o') {
-                for (char k : closedBrace) {
-                    
-                    if (characters.get(i.getIndex() + count) == i.getClose()) {
-                        i.changeState();
-                        break;
-                        
+            while (i.getState() == 'o') {  
+                if (characters.get(i.getIndex() + count) == i.getClose()) {
+                    i.changeState();       
+                }  
+                else {
+                    for (char k : closedBrace) {
+                        if (characters.get(i.getIndex() + count) == k) {
+                            valid = false;
+                        }
                     }
-                    else if (characters.get(i.getIndex() + 1) == k) {
-                        break;
-                    }
-                    count++;
                 }
+                count++;   
             }
         }
+
         for (Brace i : stack) {
-            if (i.getState() == 'c') {
-                stack.remove(i);
+            if (i.getState() == 'o') {
+                valid = false;
             }
-            
-        }
-        if (stack.size() > 0) {
-            valid = false;
         }
 
         if (valid == true) {
             System.out.println("Valid.");
         }
         else if (valid == false) {
-            System.out.println("Invalid.");
+            
+            
+            for(Brace i : stack) {
+                System.out.print(i.getType());
+                System.out.println(i.getClose());
+            }
         }
        
     }    

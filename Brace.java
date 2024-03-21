@@ -27,11 +27,11 @@ public class Brace {
         return close;
     }
     public void changeState() {
-        if (state == 'c') {
-            state = 'o';
-        }
-        else if (state == 'o') {
+        if (state == 'o') {
             state = 'c';
+        }
+        else if (state == 'c') {
+            state = 'o';
         }
     }
 
